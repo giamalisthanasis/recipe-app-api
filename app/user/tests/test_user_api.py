@@ -19,7 +19,7 @@ def create_user(**params):
     return get_user_model().objects.create_user(**params)
 
 
-class PublicUserApiTest(TestCase):
+class PublicUserApiTests(TestCase):
     """Test the public features of a user API."""
 
     def setUp(self):
@@ -88,8 +88,7 @@ class PublicUserApiTest(TestCase):
         """Test returns error if credentials invalid"""
         create_user(email='test@example.com', password='goodpass')
 
-        payload = {'email': 'test@example.com',
-                   'passwoed': 'badpass'}
+        payload = {'email': 'test@example.com', 'passwoed': 'badpass'}
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('token', res.data)
@@ -99,8 +98,7 @@ class PublicUserApiTest(TestCase):
         """Test posting a blank password returns error"""
         #create_user(email='test@example.com', password='goodpass')
 
-        payload = {'email': 'test@example.com',
-                   'passwoed': ''}
+        payload = {'email': 'test@example.com', 'password': ''}
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('token', res.data)
