@@ -69,7 +69,7 @@ class PublicUserApiTests(TestCase):
         """Test generates token for valid credentials."""
         user_details = {
             'name': 'Test Name',
-            'email':'test@example.com',
+            'email': 'test@example.com',
             'password': 'test-user-password123',
         }
         create_user(**user_details)
@@ -96,7 +96,7 @@ class PublicUserApiTests(TestCase):
 
     def test_create_token_blank_password(self):
         """Test posting a blank password returns error"""
-        #create_user(email='test@example.com', password='goodpass')
+        # create_user(email='test@example.com', password='goodpass')
 
         payload = {'email': 'test@example.com', 'password': ''}
         res = self.client.post(TOKEN_URL, payload)
@@ -109,6 +109,7 @@ class PublicUserApiTests(TestCase):
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class PrivateUserApiTests(TestCase):
     """Test API request that require authentication"""
@@ -129,7 +130,7 @@ class PrivateUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, {
             'name': self.user.name,
-            'email':self.user.email,
+            'email': self.user.email,
         })
 
     def test_post_me_not_allowed(self):
@@ -140,7 +141,7 @@ class PrivateUserApiTests(TestCase):
 
     def test_update_user_profile(self):
         """Test updating the user profile for the authenticated user"""
-        payload = {'name':'Updated name', 'password': 'newpassword123'}
+        payload = {'name': 'Updated name', 'password': 'newpassword123'}
 
         res = self.client.patch(ME_URL, payload)
 
