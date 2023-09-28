@@ -75,7 +75,7 @@ class PrivateRecipeApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = create_user(email='user@example.com', password='test123')
-        self.client.force_authenticate(user=self.user)
+        self.client.force_authenticate(self.user)
 
     def test_retrieve_recipes(self):
         """Test retrieving a list of recipes"""
@@ -150,7 +150,7 @@ class PrivateRecipeApiTests(TestCase):
         recipe = create_recipe(
             user=self.user,
             title='Sample recipe title',
-            link='http://example.com/recipe.pdf',
+            link='https://example.com/recipe.pdf',
             description='Sample recipe description',
         )
 
@@ -316,7 +316,7 @@ class PrivateRecipeApiTests(TestCase):
             'title': 'Vietnamese Soup',
             'time_minutes': 25,
             'price': Decimal('2.55'),
-            'ingredients': [{'name': 'Lemon'}, {'name': 'Fish Sause'}]
+            'ingredients': [{'name': 'Lemon'}, {'name': 'Fish Sauce'}]
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
@@ -390,7 +390,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertIn(s2.data, res.data)
         self.assertNotIn(s3.data, res.data)
 
-    def test_filter_by_ingrendients(self):
+    def test_filter_by_ingredients(self):
         """est filtering recipe by ingredients"""
         r1 = create_recipe(user=self.user, title='Posh Beans on Toast')
         r2 = create_recipe(user=self.user, title='Chicken Cacciatore')
@@ -400,7 +400,7 @@ class PrivateRecipeApiTests(TestCase):
         r2.ingredients.add(in2)
         r3 = create_recipe(user=self.user, title='Red Lentil Dahl')
 
-        params = {'ingrendients': f'{in1.id},{in2.id}'}
+        params = {'ingredients': f'{in1.id},{in2.id}'}
         res = self.client.get(RECIPES_URL, params)
 
         s1 = RecipeSerializer(r1)
